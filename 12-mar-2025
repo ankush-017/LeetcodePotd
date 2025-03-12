@@ -1,0 +1,37 @@
+class Solution {
+public:
+    int maximumCount(vector<int>& nums) {
+        
+        int n = nums.size();
+        int s = 0,e=n-1;
+        int ans =n,pos=0,neg=0;
+        // first we find first +ve element
+        while(s<=e){
+            int mid = s+(e-s)/2;
+            if(nums[mid]>0){
+                ans = mid;
+                e = mid-1;
+            }
+            else{
+                s = mid+1;
+            }
+        }
+        pos = n-ans;
+        ans = n;
+        s = 0,e=n-1;
+        // then we find first 0 or +ve element and remaining left are negative
+        while(s<=e){
+            int mid = s+(e-s)/2;
+            if(nums[mid]>=0){
+                ans = mid;
+                e = mid-1;
+            }
+            else{
+                s = mid+1;
+            }
+        }
+        neg = ans;
+
+        return max(pos,neg);
+    }
+};
