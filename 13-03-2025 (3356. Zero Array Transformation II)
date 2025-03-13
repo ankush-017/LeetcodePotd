@@ -1,1 +1,51 @@
+class Solution {
+public:
 
+    int check(int Q, vector<int>& nums, vector<vector<int>>& q){
+
+        int n = nums.size();
+        vector<int>diff(n+1,0);
+        for(int i=0;i<=Q;i++){
+            int l = q[i][0];
+            int r = q[i][1];
+            int v = q[i][2];
+            diff[l] += v;
+            if(r+1<n){
+                diff[r+1] -= v; // to maintain prefix sum ...
+            }
+        }
+        int curr = 0;
+        for(int i=0;i<n;i++){
+            curr += diff[i];
+            if(curr < nums[i]) return 0;
+        }
+
+        return 1;
+    
+    }
+    
+    int minZeroArray(vector<int>& nums, vector<vector<int>>& q) {
+        
+        int Q = q.size();
+        int n = nums.size();
+        bool ok = true;
+        for(int i=0;i<n;i++){
+            if(nums[i] != 0) ok = false;
+        }
+        if(ok) return 0;
+        int s = 0,e = Q-1;
+        int ans = -1;
+        while(s<=e){
+            int mid = s+(e-s)/2;
+            if(check(mid,nums,q)){ // true
+                ans = mid+1;
+                e = mid-1;
+            }
+            else{
+                s = mid+1;
+            }
+        }
+
+        return ans;
+    }
+};
