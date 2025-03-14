@@ -1,0 +1,41 @@
+#include <vector>
+#include <algorithm>
+#include <numeric>
+using namespace std;
+
+class Solution {
+public:
+
+    bool check(vector<int>& c, long long k, int mid) {
+
+        long long cnt = 0;
+        for (int i = 0; i < c.size(); i++) {
+            cnt += (c[i] / mid);
+            if (cnt >= k) return true;
+        }
+
+        return cnt >= k;
+    }
+
+    int maximumCandies(vector<int>& c, long long k) {
+
+        int n = c.size();
+        long long sum = accumulate(c.begin(), c.end(), 0LL);
+        if (k > sum) return 0;
+        int s = 1;
+        int e = *max_element(c.begin(), c.end());
+        int ans = 0;
+
+        while (s <= e) {
+            int mid = s + (e - s) / 2;
+            if (check(c, k, mid)) {
+                ans = mid;
+                s = mid + 1;
+            } else {
+                e = mid - 1;
+            }
+        }
+
+        return ans;
+    }
+};
