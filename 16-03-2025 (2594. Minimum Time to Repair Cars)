@@ -1,0 +1,35 @@
+class Solution {
+public:
+
+    bool check(vector<int>& r, int c, long long mid){
+
+        int cnt = 0;
+        for(int i=0;i<r.size();i++){
+            int x = sqrt(mid/r[i]);
+            cnt += x;
+            if(cnt>=c) return true;
+        }
+
+        return cnt>=c;
+    }
+
+    long long repairCars(vector<int>& r, int c) {
+        
+        long long maxi = *max_element(r.begin(),r.end());
+        long long s = 1;
+        long long e = maxi*c*c;
+        long long ans = 0;
+        while(s<=e){
+            long long mid = s+(e-s)/2;
+            if(check(r,c,mid)){
+                ans = mid;
+                e = mid - 1;
+            }
+            else{
+                s = mid + 1;
+            }
+        }
+        
+        return ans;
+    }
+};
