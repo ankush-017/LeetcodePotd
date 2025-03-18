@@ -9,7 +9,7 @@ public:
 
         for (int right = 0; right < n; right++) {
             while ((use & nums[right]) != 0) {
-                use ^= nums[left];
+                use ^= nums[left]; // here Xor is used to remove bit of left element
                 left++;
             }
             use |= nums[right];
