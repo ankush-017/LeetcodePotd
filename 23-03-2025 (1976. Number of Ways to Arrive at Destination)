@@ -1,0 +1,51 @@
+class Solution {
+public:
+
+    int mod = 1e9+7;
+
+    int dijkastr(vector<vector<pair<int,int>>>& adjList, int n, int src) {
+        vector<long long> ways(n, 0), dist(n, LLONG_MAX);
+        priority_queue<pair<long long, int>, vector<pair<long long, int>>, greater<pair<long long, int>>> pq;
+
+        ways[0] = 1;
+        dist[0] = 0;
+        pq.push({0, 0});
+
+        while (!pq.empty()) {
+            auto it = pq.top();
+            pq.pop();
+            
+            long long d = it.first;
+            long long node = it.second; 
+            
+            if (d > dist[node]) continue;  
+
+            for (auto x : adjList[node]) {
+                long long cnode = x.first; 
+                long long val = x.second;  
+                if (dist[cnode] > val + d) {
+                    dist[cnode] = val + d;
+                    ways[cnode] = ways[node];
+                    pq.push({dist[cnode], cnode});
+                } 
+                else if (dist[cnode] == val + d) {
+                    ways[cnode] = (ways[cnode] + ways[node]) % mod;
+                }
+            }
+        }
+
+        return ways[n-1];
+    }
+
+    int countPaths(int n, vector<vector<int>>& roads) {
+        vector<vector<pair<int, int>>> adjList(n);
+        
+        for (auto r : roads) {
+            int s = r[0], e = r[1], t = r[2];
+            adjList[s].push_back({e, t});
+            adjList[e].push_back({s, t});
+        }
+
+        return dijkastr(adjList, n, 0);
+    }
+};
