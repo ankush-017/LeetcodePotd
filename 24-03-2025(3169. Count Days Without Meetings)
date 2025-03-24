@@ -1,0 +1,23 @@
+class Solution {
+public:
+    int countDays(int days, vector<vector<int>>& meetings) {
+        
+        int n = meetings.size();
+        sort(meetings.begin(),meetings.end());
+        int cnt = 0;
+        int prev = 0;
+        for(auto x:meetings){
+            int s = x[0];
+            int e = x[1];
+            if(s>prev){
+                cnt += (s-prev-1);
+            }
+            prev = max(prev,e );
+        }
+        if(days>prev){
+            cnt += days-prev;
+        }
+
+        return cnt;
+    }
+};
