@@ -1,0 +1,33 @@
+class Solution {
+public:
+    bool checkValidCuts(int n, vector<vector<int>>& rectangles) {
+
+        int m = rectangles.size();
+        if (m < 2) return false;
+        vector<pair<int, int>> X, Y;
+        for (auto& r : rectangles) {
+            X.push_back({r[0], r[2]});
+            Y.push_back({r[1], r[3]});
+        }
+        sort(X.begin(), X.end());
+        sort(Y.begin(), Y.end());
+        int max_x = X[0].second;
+        int cuts_x = 0;
+        for (int i = 1; i < m; i++) {
+            if (X[i].first >= max_x) {
+                cuts_x++;
+            }
+            max_x = max(max_x, X[i].second);
+        }
+        int max_y = Y[0].second;
+        int cuts_y = 0;
+        for (int i = 1; i < m; i++) {
+            if (Y[i].first >= max_y) {
+                cuts_y++;
+            }
+            max_y = max(max_y, Y[i].second);
+        }
+
+        return cuts_x >= 2 || cuts_y >= 2;
+    }
+};
